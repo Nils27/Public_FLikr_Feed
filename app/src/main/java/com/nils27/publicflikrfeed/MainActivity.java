@@ -6,9 +6,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 
+import com.nils27.publicflikrfeed.adapter.PublicFeedAdapter;
 import com.nils27.publicflikrfeed.databinding.ActivityMainBinding;
+import com.nils27.publicflikrfeed.model.Item;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements PublicFeedAdapter.ImageOnClickHandler {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
+
+    private PublicFeedAdapter mAdapter;
+    private List<Item> mItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,26 +27,35 @@ public class MainActivity extends AppCompatActivity {
 
         binding.rvMain.setLayoutManager(new LinearLayoutManager(this)); //todo Maybe change this to grid layout later
 
-        binding.rvMain.setAdapter(null); //todo set adapter
-
+        mAdapter = new PublicFeedAdapter(this, null, this);
+        binding.rvMain.setAdapter(null); //todo set adapter null - change data after network call retrieves data
 
     }
 
 
-    private void goToDetailsView() {
+    private void goToDetailsView(Item item) {
             Intent detailIntent = new Intent(this, DetailsActivity.class);
-            //detailIntent.putExtra() todo will prob need to send over the pojo of selected image (parcelable)
+            //detailIntent.putExtra("Item Passed", item) todo will prob need to send over the pojo of selected image (parcelable)
             startActivity(detailIntent);
     }
 
+    @Override
+    public void onImageClick(int position, String title) {
+        Item item;
+
+        if (mItems != null) {
+            item = mItems.get(position);
+            goToDetailsView(item);
+        }
+    }
 }
 
 
     /*
-    TODO - 1 - create the skeleton
-    TODO - 2 - Create the POJOs
+    Done - 1 - create the skeleton
+    Done - 2 - Create the POJOs
     TODO - 3 - implement retrofit to get the data
-    TODO - 4 - implement glide for the images
+    Done - 4 - implement glide for the images
     TODO - 5 - show the gallery/adapter
     TODO - 6 - store the json response string data (sharedPrefs?)
         TODO - 6b - test if online - else use last saved response - sharedPrefs
