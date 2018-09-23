@@ -7,4 +7,6 @@
     <string name="description">Description</string>
 
     <string name="details_activity">Details Activity</string>
+    <string name="image_selected">Image Selected</string>
+    <string name="image_from_feed">Image From Public Feed</string>
 </resources>

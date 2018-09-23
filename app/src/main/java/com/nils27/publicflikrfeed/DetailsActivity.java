@@ -1,7 +1,8 @@
 package com.nils27.publicflikrfeed;
 
 import android.databinding.DataBindingUtil;
-import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,9 +11,12 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.nils27.publicflikrfeed.databinding.ActivityDetailsBinding;
-import com.nils27.publicflikrfeed.databinding.ActivityMainBinding;
 import com.nils27.publicflikrfeed.model.Item;
 import com.nils27.publicflikrfeed.model.Media;
+
+//for testing purposes
+import android.support.test.espresso.IdlingResource;
+
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -36,6 +40,8 @@ public class DetailsActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        SimpleIdlingResource.increment(); //tell Expresso to wait
+
         if (savedInstanceState!=null) {
             // get data from bundle
             mItemPassed = savedInstanceState.getParcelable(ITEM_KEY);
@@ -56,6 +62,8 @@ public class DetailsActivity extends AppCompatActivity {
         } else {
             Log.d(TAG, "onCreate: No Media data found");
         }
+
+        SimpleIdlingResource.decrement(); //Expresso can now resume as data passed has been used
     }
 
 
@@ -78,6 +86,13 @@ public class DetailsActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        return SimpleIdlingResource.getIdlingResource();
     }
 
 }
