@@ -5,12 +5,22 @@ import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.nils27.publicflikrfeed.adapter.PublicFeedAdapter;
 import com.nils27.publicflikrfeed.databinding.ActivityMainBinding;
+import com.nils27.publicflikrfeed.model.Example;
 import com.nils27.publicflikrfeed.model.Item;
+import com.nils27.publicflikrfeed.network.FlikrApiInterface;
+import com.nils27.publicflikrfeed.network.RetroFitClient;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity implements PublicFeedAdapter.ImageOnClickHandler {
 
@@ -25,10 +35,50 @@ public class MainActivity extends AppCompatActivity implements PublicFeedAdapter
         //setContentView(R.layout.activity_main);
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        binding.rvMain.setLayoutManager(new LinearLayoutManager(this)); //todo Maybe change this to grid layout later
+        //todo change this to grid layout later
+        //todo change dimensions of viewholder to be something that shows the images better
+        binding.rvMain.setLayoutManager(new LinearLayoutManager(this));
 
         mAdapter = new PublicFeedAdapter(this, null, this);
-        binding.rvMain.setAdapter(null); //todo set adapter null - change data after network call retrieves data
+        binding.rvMain.setAdapter(mAdapter);
+
+        //todo if no network show last saved data/response already in sharedPrefs? or error screen?
+
+
+        if (savedInstanceState != null) {
+            //data should already exist
+
+        } else {
+            //no previous data - fetch new data
+            Retrofit retrofit = RetroFitClient.getClient();
+            FlikrApiInterface client = retrofit.create(FlikrApiInterface.class);
+            Call<Example> call = client.getPublicImagesJson();
+
+            call.enqueue(new Callback<Example>() {
+                @Override
+                public void onResponse(Call<Example> call, Response<Example> response) {
+                    Example resp = response.body(); //Data
+                    if (resp==null) {
+                        Log.i(TAG, "onResponse: response list is NULL!");
+                    } else {
+                        mItems = resp.getItems();
+                        mAdapter.changeItemList(mItems);
+                        // todo Store data into sharedPrefs?
+                        Log.i(TAG, "onResponse: Public received and parsed");
+                        Log.i(TAG, "onResponse: resp title - " + resp.getTitle());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Example> call, Throwable t) {
+                    Toast.makeText(getBaseContext(), "Error Retrieving The JSON Data", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "onFailure: Error getting the JSON image data");
+                    Log.e(TAG, "onFailure: Call request - " + call.request().toString());
+                    Log.e(TAG, "onFailure: Call URL request - " + call.request().url().toString());
+                }
+            });
+
+        }
 
     }
 
@@ -42,10 +92,11 @@ public class MainActivity extends AppCompatActivity implements PublicFeedAdapter
     @Override
     public void onImageClick(int position, String title) {
         Item item;
-
         if (mItems != null) {
             item = mItems.get(position);
             goToDetailsView(item);
+        } else {
+            Log.i(TAG, "onImageClick: No Item data on position - " + position);
         }
     }
 }
@@ -54,9 +105,10 @@ public class MainActivity extends AppCompatActivity implements PublicFeedAdapter
     /*
     Done - 1 - create the skeleton
     Done - 2 - Create the POJOs
-    TODO - 3 - implement retrofit to get the data
+    Done - 3 - implement retrofit to get the data
     Done - 4 - implement glide for the images
-    TODO - 5 - show the gallery/adapter
+    Done - 5 - show the gallery/adapter
+    TODO - 5b - show the details screen with all data
     TODO - 6 - store the json response string data (sharedPrefs?)
         TODO - 6b - test if online - else use last saved response - sharedPrefs
     TODO - 7 - testing
