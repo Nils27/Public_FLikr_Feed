@@ -5,4 +5,6 @@
     <string name="author">Author</string>
     <string name="published">Published</string>
     <string name="description">Description</string>
+
+    <string name="details_activity">Details Activity</string>
 </resources>

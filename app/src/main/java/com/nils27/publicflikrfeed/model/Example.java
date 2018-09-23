@@ -1,11 +1,14 @@
 package com.nils27.publicflikrfeed.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Example {
+public class Example implements Parcelable {
 
     @SerializedName("title")
     @Expose
@@ -25,6 +28,27 @@ public class Example {
     @SerializedName("items")
     @Expose
     private List<Item> items = null;
+
+    protected Example(Parcel in) {
+        title = in.readString();
+        link = in.readString();
+        description = in.readString();
+        modified = in.readString();
+        generator = in.readString();
+        items = in.createTypedArrayList(Item.CREATOR);
+    }
+
+    public static final Creator<Example> CREATOR = new Creator<Example>() {
+        @Override
+        public Example createFromParcel(Parcel in) {
+            return new Example(in);
+        }
+
+        @Override
+        public Example[] newArray(int size) {
+            return new Example[size];
+        }
+    };
 
     public String getTitle() {
         return title;
@@ -74,4 +98,18 @@ public class Example {
         this.items = items;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(title);
+        parcel.writeString(link);
+        parcel.writeString(description);
+        parcel.writeString(modified);
+        parcel.writeString(generator);
+        parcel.writeTypedList(items);
+    }
 }

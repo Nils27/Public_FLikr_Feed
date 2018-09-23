@@ -29,9 +29,11 @@ public class MainActivity extends AppCompatActivity implements PublicFeedAdapter
 
     public static final String ITEM_PASSED_KEY = "Item Passed";
     public static final String MEDIA_PASSED_KEY = "Media Passed";
+    private static final String EXAMPLES_KEY = "ItemsListKey";
 
     private PublicFeedAdapter mAdapter;
     private List<Item> mItems;
+    private Example mExample;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +48,11 @@ public class MainActivity extends AppCompatActivity implements PublicFeedAdapter
 
         //todo if no network show last saved data/response already in sharedPrefs? or error screen?
 
-
         if (savedInstanceState != null) {
             //data should already exist
+            mExample = savedInstanceState.getParcelable(EXAMPLES_KEY);
+            mItems = mExample.getItems();
+            mAdapter.changeItemList(mItems);
 
         } else {
             //no previous data - fetch new data
@@ -63,9 +67,9 @@ public class MainActivity extends AppCompatActivity implements PublicFeedAdapter
                     if (resp==null) {
                         Log.i(TAG, "onResponse: response list is NULL!");
                     } else {
+                        mExample = resp;
                         mItems = resp.getItems();
                         mAdapter.changeItemList(mItems);
-                        // todo Store data into sharedPrefs?
                         Log.i(TAG, "onResponse: Public received and parsed");
                         Log.i(TAG, "onResponse: resp title - " + resp.getTitle());
                     }
@@ -102,6 +106,12 @@ public class MainActivity extends AppCompatActivity implements PublicFeedAdapter
         } else {
             Log.i(TAG, "onImageClick: No Item data on position - " + position);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(EXAMPLES_KEY, mExample);
+        super.onSaveInstanceState(outState);
     }
 }
 
