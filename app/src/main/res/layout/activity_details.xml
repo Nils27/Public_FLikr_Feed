@@ -75,7 +75,9 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@{itemPassedData.title}"
+                android:textAlignment="center"
                 android:textAppearance="@android:style/TextAppearance.Material.Medium"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/guideline" />

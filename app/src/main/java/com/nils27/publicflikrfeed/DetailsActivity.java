@@ -38,6 +38,7 @@ public class DetailsActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(R.string.details_title);
         }
 
         SimpleIdlingResource.increment(); //tell Expresso to wait
@@ -54,6 +55,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         if (mItemPassed !=null) {
             binding.setItemPassedData(mItemPassed);
+            //actionBar.setTitle(mItemPassed.getTitle());
         } else {
             Log.d(TAG, "onCreate: No Item data found");
         }

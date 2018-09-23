@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -49,6 +50,12 @@ public class MainActivity extends AppCompatActivity implements PublicFeedAdapter
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         binding.rvMain.setLayoutManager(new LinearLayoutManager(this));
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.main_title);
+        }
+
 
         mAdapter = new PublicFeedAdapter(this, null, this);
         binding.rvMain.setAdapter(mAdapter);

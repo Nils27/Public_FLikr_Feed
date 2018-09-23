@@ -9,4 +9,6 @@
     <string name="details_activity">Details Activity</string>
     <string name="image_selected">Image Selected</string>
     <string name="image_from_feed">Image From Public Feed</string>
+    <string name="main_title">Flikr Public Images</string>
+    <string name="details_title">Image Chosen</string>
 </resources>
