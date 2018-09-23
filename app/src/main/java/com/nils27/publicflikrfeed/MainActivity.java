@@ -1,15 +1,35 @@
 package com.nils27.publicflikrfeed;
 
+import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+
+import com.nils27.publicflikrfeed.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_main);
+        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
+        binding.rvMain.setLayoutManager(new LinearLayoutManager(this)); //todo Maybe change this to grid layout later
+
+        binding.rvMain.setAdapter(null); //todo set adapter
+
+
     }
+
+
+    private void goToDetailsView() {
+            Intent detailIntent = new Intent(this, DetailsActivity.class);
+            //detailIntent.putExtra() todo will prob need to send over the pojo of selected image (parcelable)
+            startActivity(detailIntent);
+    }
+
 }
 
 
