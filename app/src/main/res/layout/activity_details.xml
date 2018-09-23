@@ -6,6 +6,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
 
+    <data>
+        <variable name="itemPassedData" type="com.nils27.publicflikrfeed.model.Item" />
+        <variable name="mediaPassedData" type="com.nils27.publicflikrfeed.model.Media" />
+    </data>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -20,12 +25,12 @@
                 android:id="@+id/imageView"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginBottom="8dp"
+                android:scaleType="centerCrop"
+                app:imageUrl="@{mediaPassedData.getM()}"
                 app:layout_constraintBottom_toTopOf="@+id/guideline"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@android:drawable/ic_menu_report_image" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <android.support.constraint.Guideline
                 android:id="@+id/guideline"
@@ -68,7 +73,8 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/placeholder_text"
+                android:text="@{itemPassedData.title}"
+                android:textAppearance="@android:style/TextAppearance.Material.Medium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/guideline" />
@@ -84,7 +90,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_AuthorLabel" />
 
             <TextView
-                android:id="@+id/tv_Description"
+                android:id="@+id/tv_DescriptionLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -99,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:text="@string/placeholder_text"
+                android:text="@{itemPassedData.date_taken}"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_DateTakenLabel"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -111,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:text="@string/placeholder_text"
+                android:text="@{itemPassedData.author}"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_AuthorLabel"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -124,23 +130,22 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/placeholder_text"
+                android:text="@{itemPassedData.published}"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_PublishedLabel"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
                 app:layout_constraintTop_toTopOf="@+id/tv_PublishedLabel" />
 
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/tv_Description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:text="@string/placeholder_text"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_Description"
+                android:text="@{itemPassedData.description}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toTopOf="@+id/tv_Description" />
+                app:layout_constraintTop_toTopOf="@+id/tv_DescriptionLabel" />
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 </layout>

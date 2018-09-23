@@ -15,12 +15,13 @@
         android:onClick="@{listener::onClick}"
         >
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:id="@+id/iv_Image"
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="@dimen/main_image_height"
             android:layout_marginTop="8dp"
             app:imageUrl="@{itemData.getMedia().getM()}"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

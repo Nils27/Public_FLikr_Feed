@@ -12,6 +12,7 @@ import com.nils27.publicflikrfeed.adapter.PublicFeedAdapter;
 import com.nils27.publicflikrfeed.databinding.ActivityMainBinding;
 import com.nils27.publicflikrfeed.model.Example;
 import com.nils27.publicflikrfeed.model.Item;
+import com.nils27.publicflikrfeed.model.Media;
 import com.nils27.publicflikrfeed.network.FlikrApiInterface;
 import com.nils27.publicflikrfeed.network.RetroFitClient;
 
@@ -26,6 +27,9 @@ public class MainActivity extends AppCompatActivity implements PublicFeedAdapter
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    public static final String ITEM_PASSED_KEY = "Item Passed";
+    public static final String MEDIA_PASSED_KEY = "Media Passed";
+
     private PublicFeedAdapter mAdapter;
     private List<Item> mItems;
 
@@ -35,8 +39,6 @@ public class MainActivity extends AppCompatActivity implements PublicFeedAdapter
         //setContentView(R.layout.activity_main);
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        //todo change this to grid layout later
-        //todo change dimensions of viewholder to be something that shows the images better
         binding.rvMain.setLayoutManager(new LinearLayoutManager(this));
 
         mAdapter = new PublicFeedAdapter(this, null, this);
@@ -84,8 +86,10 @@ public class MainActivity extends AppCompatActivity implements PublicFeedAdapter
 
 
     private void goToDetailsView(Item item) {
+            Media media = item.getMedia();
             Intent detailIntent = new Intent(this, DetailsActivity.class);
-            //detailIntent.putExtra("Item Passed", item) todo will prob need to send over the pojo of selected image (parcelable)
+            detailIntent.putExtra(ITEM_PASSED_KEY, item);
+            detailIntent.putExtra(MEDIA_PASSED_KEY, media);
             startActivity(detailIntent);
     }
 
@@ -108,8 +112,9 @@ public class MainActivity extends AppCompatActivity implements PublicFeedAdapter
     Done - 3 - implement retrofit to get the data
     Done - 4 - implement glide for the images
     Done - 5 - show the gallery/adapter
-    TODO - 5b - show the details screen with all data
-    TODO - 6 - store the json response string data (sharedPrefs?)
+    Done - 5b - show the details screen with all data
+    TODO - 6 - handle conifguration changes (rotation)
+    TODO - 7 - store the json response string data (sharedPrefs?)
         TODO - 6b - test if online - else use last saved response - sharedPrefs
     TODO - 7 - testing
      */
